@@ -7,7 +7,8 @@ const bodyParser = require("body-parser");
 const constants = require("constants");
 
 const Config = {
-  whitelist: [www.domain.com, domain.com, localhost],
+  host: "::",
+  whitelist: ["www.domain.com", "domain.com", "localhost"],
   certificate: "ssl/certificate.crt",
   ca_bundle: "ssl/ca_bundle.crt",
   privateKey: "ssl/private.key"
@@ -52,6 +53,7 @@ if (privateKeyFile && certificateFile && caBundleFile) {
     key: privateKeyFile,
     secureOptions: constants.SSL_OP_NO_SSLv3 | constants.SSL_OP_NO_SSLv2
   };
+  Config.port = '443';
   const httpsServer = https.createServer(credentials, server);
   const serverHttpsApp = httpsServer.listen(Config.port, Config.host, () => {
     console.log(
@@ -62,6 +64,7 @@ if (privateKeyFile && certificateFile && caBundleFile) {
     );
   });
 } else {
+  Config.port = '3000';
   const serverApp = server.listen(Config.port, Config.host, () => {
     console.log(
       "Server listening on : \n\t" +

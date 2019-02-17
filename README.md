@@ -70,14 +70,12 @@ These are our basics requirements, we have our file and path operations. We have
 
 ```JavaScript
 const Config = {
-    whitelist : [
-        www.domain.com,
-        domain.com,
-        localhost
-    ],
-    certificate : 'ssl/certificate.crt',
-    ca_bundle : 'ssl/ca_bundle.crt',
-    privateKey : 'ssl/private.key',
+  host: "::",
+  port: "443",
+  whitelist: ["www.domain.com", "domain.com", "localhost"],
+  certificate: "ssl/certificate.crt",
+  ca_bundle: "ssl/ca_bundle.crt",
+  privateKey: "ssl/private.key"
 }
 ```
 
@@ -152,6 +150,7 @@ if (privateKeyFile && certificateFile && caBundleFile) {
     key: privateKeyFile,
     secureOptions: constants.SSL_OP_NO_SSLv3 | constants.SSL_OP_NO_SSLv2
   };
+  Config.port = '443';
   //We create the server layer with the new credentials using our application server.
   const httpsServer = https.createServer(credentials, server);
   //finally we start listening to connections on our new secure server.
@@ -165,6 +164,7 @@ if (privateKeyFile && certificateFile && caBundleFile) {
   });
 } else {
   // Something must not have loaded in our security, but we can see if the server will start normally this can help us narrow down any bugs.
+  Config.port = '3000';
   const serverApp = server.listen(Config.port, Config.host, () => {
     console.log(
       "Server listening on : \n\t" +
